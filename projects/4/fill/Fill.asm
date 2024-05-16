@@ -8,4 +8,81 @@
 // i.e. writes "black" in every pixel. When no key is pressed, 
 // the screen should be cleared.
 
-//// Replace this comment with your code.
+@color
+M=0
+
+(LOOP)
+@KBD
+D=M
+
+@CLEAR
+D;JEQ
+
+@FILL
+0;JMP
+
+
+
+/////////////////////////////////////////////////////
+// Fill proc
+
+(FILL)
+  @color
+  D=M
+  @LOOP
+  D;JLT //if color -1 no need fill
+
+  @color
+  M=-1
+  @PAINT
+  0;JMP
+
+/////////////////////////////////////////////////////
+// Clear proc
+
+(CLEAR)
+  @color
+  D=M
+  @LOOP
+  D;JEQ //if color 0 no need clear
+
+  @color
+  M=0
+  @PAINT
+  0;JMP
+
+
+(PAINT)
+  @8160
+  D=A
+  @blocks
+  M=D
+
+  @SCREEN
+  D=A
+  @R0
+  M=D // R0 keep current address of screen to fill
+
+(PAINT_LOOP)
+  @blocks
+  D=M
+  @LOOP
+  D;JEQ // check if last block
+
+
+
+  @color
+  D=M
+  @R0
+  A=M
+  M=D // fill screen
+
+  @R0
+  M=M+1
+
+  
+  @blocks
+  M=M-1 //Decrease blocs
+
+  @PAINT_LOOP
+  0;JMP
