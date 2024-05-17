@@ -15,17 +15,16 @@ M=0
 @KBD
 D=M
 
-@CLEAR
+@CLEAR // if no key pressed clear screen
 D;JEQ
 
-@FILL
+@FILL // fill screen if key pressed
 0;JMP
 
 
 
 /////////////////////////////////////////////////////
 // Fill proc
-
 (FILL)
   @color
   D=M
@@ -33,13 +32,12 @@ D;JEQ
   D;JLT //if color -1 no need fill
 
   @color
-  M=-1
+  M=-1  // change color to -1   1111111111  to fill screen
   @PAINT
   0;JMP
 
 /////////////////////////////////////////////////////
 // Clear proc
-
 (CLEAR)
   @color
   D=M
@@ -47,7 +45,7 @@ D;JEQ
   D;JEQ //if color 0 no need clear
 
   @color
-  M=0
+  M=0 // change color to 0 to clear screen
   @PAINT
   0;JMP
 
