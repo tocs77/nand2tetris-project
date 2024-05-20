@@ -7,7 +7,8 @@
  * When reset = 0, the program stored in the ROM executes.
  * When reset = 1, the program's execution restarts. 
  * Thus, to start running the currently loaded program,
- * set reset to 1, and then set it to 0. 
+ * set reset to 1, and then set it to 0. \
+ 
  * From this point onwards, the user is at the mercy of the software.
  * Depending on the program's code, and whether the code is correct,
  * the screen may show some output, the user may be expected to enter
@@ -18,5 +19,7 @@ CHIP Computer {
     IN reset;
 
     PARTS:
-    //// Replace this comment with your code.
+    CPU(inM=memoryOut, instruction=instruction, reset=reset, outM=memoryIn, writeM=load, addressM=memoryAddress, pc=romAddress);
+    Memory(in=memoryIn, load=load, address=memoryAddress, out=memoryOut);
+    ROM32K(address=romAddress, out=instruction);
 }
