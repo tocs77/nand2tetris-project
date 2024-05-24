@@ -6,8 +6,9 @@ export const clearSource = (source: string) => {
   const lines = cleanedSource.split('\n');
   for (let line of lines) {
     line.trim();
-    const [code, _] = line.split('//');
-    if (code) cleanSource.push(code.trim());
+    let [code, _] = line.split('//');
+    code = code.trim();
+    if (code) cleanSource.push(code);
   }
   return cleanSource;
 };

@@ -1,5 +1,6 @@
 import { arithmeticCommandsBinary, arithmeticCommandsUnary, compareCommand } from './arithmetic';
 import { popMemoryAccessCommand, pushMemoryAccessCommand } from './memoryAccess';
+import { flowCommand } from './programFlow';
 import { clearSource } from './translatorUtils';
 import { commands, Command } from './types';
 
@@ -30,6 +31,11 @@ export const vmTranslator = (source: string, moduleName: string) => {
       case 'not':
       case 'neg':
         assembledText += arithmeticCommandsUnary(command, comment);
+        break;
+      case 'label':
+      case 'goto':
+      case 'if-goto':
+        assembledText += flowCommand(line, moduleName, comment);
         break;
 
       default:
