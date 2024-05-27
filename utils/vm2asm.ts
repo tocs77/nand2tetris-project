@@ -25,7 +25,6 @@ function translateFile(filePath: string) {
 
   const fileName = path.basename(filePath);
   const fileDir = path.dirname(filePath);
-  console.log(fileDir);
 
   // Read the file
   fs.readFile(filePath, 'utf8', (err, data) => {
@@ -43,4 +42,24 @@ function translateFile(filePath: string) {
   });
 }
 
-function translateDirectory(dirPath: string) {}
+function translateDirectory(dirPath: string) {
+  const files = fs.readdirSync(dirPath);
+  const vmFiles = collecVmFiles(files, dirPath);
+  if (vmFiles.indexOf('Sys.vm') === -1) {
+    console.error('No Sys.vm file in directory.');
+    process.exit(1);
+  }
+}
+
+function collecVmFiles(files: string[], dirPath: string) {
+  const vmFiles: string[] = [];
+  for (const file of files) {
+    const filePath = path.join(dirPath, file);
+    if (fs.lstatSync(filePath).isDirectory()) continue;
+    const ext = path.extname(file).toLowerCase();
+    if (ext === '.vm') {
+      vmFiles.push(file);
+    }
+  }
+  return vmFiles;
+}

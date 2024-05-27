@@ -1,4 +1,5 @@
 import { arithmeticCommandsBinary, arithmeticCommandsUnary, compareCommand } from './arithmetic';
+import { functionCommand, callCommand, returnCommand } from './functions';
 import { popMemoryAccessCommand, pushMemoryAccessCommand } from './memoryAccess';
 import { flowCommand } from './programFlow';
 import { clearSource } from './translatorUtils';
@@ -36,6 +37,16 @@ export const vmTranslator = (source: string, moduleName: string) => {
       case 'goto':
       case 'if-goto':
         assembledText += flowCommand(line, moduleName, comment);
+        break;
+
+      case 'function':
+        assembledText += functionCommand(line, moduleName, comment);
+        break;
+      case 'call':
+        assembledText += callCommand(line, moduleName, comment);
+        break;
+      case 'return':
+        assembledText += returnCommand(comment);
         break;
 
       default:
