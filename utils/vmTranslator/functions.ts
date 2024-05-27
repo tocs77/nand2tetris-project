@@ -85,4 +85,79 @@ export const returnCommand = (comment: string) => {
   assembledText += '0;JMP\n';
   return assembledText;
 };
-export const callCommand = (cmd: string, moduleName: string, comment: string) => {};
+export const callCommand = (cmd: string, comment: string) => {
+  const [_, funcName, args] = cmd.split(' ');
+  let assembledText = '';
+  const returnLabel = `${funcName}$ret.${Math.random()}`;
+
+  const argNum = Number(args);
+  // push return-address (Using the label declared below)
+  assembledText += `@${returnLabel} ${comment}\n`;
+  assembledText += 'D=A\n';
+  assembledText += '@SP\n';
+  assembledText += 'A=M\n';
+  assembledText += 'M=D\n';
+  // increase SP
+  assembledText += '@SP\n';
+  assembledText += 'M=M+1\n';
+
+  // push LCL Save LCL of the calling function
+  assembledText += '@LCL\n';
+  assembledText += 'D=M\n';
+  assembledText += '@SP\n';
+  assembledText += 'A=M\n';
+  assembledText += 'M=D\n';
+  // increase SP
+  assembledText += '@SP\n';
+  assembledText += 'M=M+1\n';
+
+  // push ARG Save ARG of the calling function
+  assembledText += '@ARG\n';
+  assembledText += 'D=M\n';
+  assembledText += '@SP\n';
+  assembledText += 'A=M\n';
+  assembledText += 'M=D\n';
+  // increase SP
+  assembledText += '@SP\n';
+  assembledText += 'M=M+1\n';
+
+  // push THIS Save THIS of the calling function
+  assembledText += '@THIS\n';
+  assembledText += 'D=M\n';
+  assembledText += '@SP\n';
+  assembledText += 'A=M\n';
+  assembledText += 'M=D\n';
+  // increase SP
+  assembledText += '@SP\n';
+  assembledText += 'M=M+1\n';
+  // push THAT Save THAT of the calling function
+  assembledText += '@THAT\n';
+  assembledText += 'D=M\n';
+  assembledText += '@SP\n';
+  assembledText += 'A=M\n';
+  assembledText += 'M=D\n';
+  // increase SP
+  assembledText += '@SP\n';
+  assembledText += 'M=M+1\n';
+
+  // ARG = SP-n-5 Reposition ARG (n ¼ number of args.)
+  assembledText += `@${argNum}\n`;
+  assembledText += 'D=A\n';
+  assembledText += '@5\n';
+  assembledText += 'D=D+A\n';
+  assembledText += '@SP\n';
+  assembledText += 'D=M-D\n';
+  assembledText += '@ARG\n';
+  assembledText += 'M=D\n';
+  // LCL = SP  Reposition LCL
+  assembledText += '@SP\n';
+  assembledText += 'D=M\n';
+  assembledText += '@LCL\n';
+  assembledText += 'M=D\n';
+  // goto f Transfer control
+  assembledText += `@${funcName}\n`;
+  assembledText += '0;JMP\n';
+  // (return-address) Declare a label for the return-address
+  assembledText += `(${returnLabel})\n`;
+  return assembledText;
+};

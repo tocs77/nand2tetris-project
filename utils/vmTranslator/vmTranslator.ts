@@ -43,7 +43,7 @@ export const vmTranslator = (source: string, moduleName: string) => {
         assembledText += functionCommand(line, moduleName, comment);
         break;
       case 'call':
-        assembledText += callCommand(line, moduleName, comment);
+        assembledText += callCommand(line, comment);
         break;
       case 'return':
         assembledText += returnCommand(comment);
@@ -67,4 +67,15 @@ const getCommand = (cmd: string): Command => {
   }
   console.error(`Unknown command ${cmd}`);
   process.exit(1);
+};
+
+export const bootstarp = () => {
+  let assembledText = '';
+  assembledText += '@256  //Bootstrap code\n';
+  assembledText += 'D=A\n';
+  assembledText += '@SP\n';
+  assembledText += 'M=D\n';
+  assembledText += '';
+  assembledText += callCommand('call Sys.init 0', '');
+  return assembledText;
 };
