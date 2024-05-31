@@ -1,8 +1,9 @@
-import { Lexem } from 'jackCompiler/types';
+import { Lexem } from '../types';
 import { compileType } from './compileType';
 import { compileParameterList } from './compileParameterList';
 import { compileVarDec } from './compileVarDec';
 import { compileStatements } from './compileStatements';
+import { escapeHtml } from '../utils';
 
 export function compileSubroutine(lexems: Lexem[]) {
   if (lexems[0].type !== 'keyword') return '';
@@ -26,19 +27,20 @@ export function compileSubroutine(lexems: Lexem[]) {
 
   lexem = lexems.shift();
   if (lexem.type !== 'symbol' && lexem.value !== '(') throw new Error(`Expected ( ${lexem.type}-${lexem.value}`);
-  outXml += `<symbol> ${lexem.value} </symbol>\n`;
+  outXml += `<symbol> ${escapeHtml(lexem.value)} </symbol>\n`;
   outXml += compileParameterList(lexems);
   lexem = lexems.shift();
   if (lexem.type !== 'symbol' && lexem.value !== ')') throw new Error(`Expected ) ${lexem.type}-${lexem.value}`);
 
   lexem = lexems.shift();
   if (lexem.type !== 'symbol' && lexem.value !== '{') throw new Error(`Expected { ${lexem.type}-${lexem.value}`);
-  outXml += `<symbol> ${lexem.value} </symbol>\n`;
+  outXml += `<symbol> ${escapeHtml(lexem.value)} </symbol>\n`;
   outXml += compileVarDec(lexems);
+  return outXml;
   outXml += compileStatements(lexems);
   lexem = lexems.shift();
   if (lexem.type !== 'symbol' && lexem.value !== '}') throw new Error(`Expected } ${lexem.type}-${lexem.value}`);
-  outXml += `<symbol> ${lexem.value} </symbol>\n`;
+  outXml += `<symbol> ${escapeHtml(lexem.value)} </symbol>\n`;
   outXml += `</subroutineDec>\n`;
 
   return outXml;

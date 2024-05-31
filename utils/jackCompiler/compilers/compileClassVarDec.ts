@@ -1,5 +1,6 @@
-import { Lexem } from 'jackCompiler/types';
+import { Lexem } from '../types';
 import { compileType } from './compileType';
+import { escapeHtml } from '../utils';
 
 export function compileClassVarDec(lexems: Lexem[]) {
   if (lexems.length === 0) return '';
@@ -23,13 +24,13 @@ export function compileClassVarDec(lexems: Lexem[]) {
     // compile (',' varName)*
     lexem = lexems.shift();
     if (lexem.type === 'symbol' && lexem.value === ';') {
-      outXml += `<symbol> ${lexem.value} </symbol>\n`;
+      outXml += `<symbol> ${escapeHtml(lexem.value)} </symbol>\n`;
       break;
     }
     if (lexem.type !== 'symbol' && lexem.value !== ',') {
       throw new Error(`Expected , or ; ${lexem.type}-${lexem.value}`);
     }
-    outXml += `<symbol> ${lexem.value} </symbol>\n`;
+    outXml += `<symbol> ${escapeHtml(lexem.value)} </symbol>\n`;
     lexem = lexems.shift();
     if (lexem.type !== 'identifier') {
       throw new Error(`Expected identifier ${lexem.type}-${lexem.value}`);

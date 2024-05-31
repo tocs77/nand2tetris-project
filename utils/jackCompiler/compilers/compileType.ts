@@ -1,4 +1,4 @@
-import { Lexem } from 'jackCompiler/types';
+import { Lexem } from '../types';
 
 export function compileType(lexems: Lexem[]) {
   if (lexems.length === 0) return '';

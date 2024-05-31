@@ -1,6 +1,7 @@
 import { compileClassVarDec } from './compilers/compileClassVarDec';
 import { compileSubroutine } from './compilers/compileSubroutine';
 import { Lexem } from './types';
+import { escapeHtml } from './utils';
 
 export function parser(lexems: Lexem[]) {
   let outXml = '';
@@ -26,7 +27,7 @@ function compileClass(lexems: Lexem[]) {
   if (lexem.type !== 'symbol' && lexem.value !== '{') {
     throw new Error(`Expected { ${lexem.type}-${lexem.value}`);
   }
-  outXml += `<symbol> ${lexem.value} </symbol>\n`;
+  outXml += `<symbol> ${escapeHtml(lexem.value)} </symbol>\n`;
 
   outXml += compileClassVarDec(lexems);
   outXml += compileSubroutine(lexems);
@@ -37,7 +38,7 @@ function compileClass(lexems: Lexem[]) {
   if (lexem.type !== 'symbol' && lexem.value !== '}') {
     throw new Error(`Expected } ${lexem.type}-${lexem.value}`);
   }
-  outXml += `<symbol> ${lexem.value} </symbol>\n`;
+  outXml += `<symbol> ${escapeHtml(lexem.value)} </symbol>\n`;
   outXml += `</class>\n`;
   return outXml;
 }
