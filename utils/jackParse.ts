@@ -35,13 +35,12 @@ function tokenizeFile(filePath: string) {
     }
     const lexems = tokenizer(data);
     const xml = parser(lexems);
-    console.log(xml);
-    // fs.writeFile(`${fileDir}/${fileName.replace('.jack', 'T_.xml')}`, tokenizedText, (err) => {
-    //   if (err) {
-    //     console.error('Error writing file:', err);
-    //     process.exit(1);
-    //   }
-    // });
+    fs.writeFile(`${fileDir}/${fileName.replace('.jack', '_.xml')}`, xml, (err) => {
+      if (err) {
+        console.error('Error writing file:', err);
+        process.exit(1);
+      }
+    });
   });
 }
 

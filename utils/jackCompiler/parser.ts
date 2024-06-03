@@ -32,8 +32,6 @@ function compileClass(lexems: Lexem[]) {
   outXml += compileClassVarDec(lexems);
   outXml += compileSubroutine(lexems);
 
-  return outXml;
-
   lexem = lexems.shift();
   if (lexem.type !== 'symbol' && lexem.value !== '}') {
     throw new Error(`Expected } ${lexem.type}-${lexem.value}`);

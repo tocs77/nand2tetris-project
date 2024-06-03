@@ -6,28 +6,29 @@ export const compileSubroutineCall = (lexems: Lexem[]) => {
   let lexem = lexems.shift();
   if (lexem.type !== 'identifier') throw new Error('Expected identifier');
   let outXml = `<identifier>${lexem.value}</identifier>`;
+
   lexem = lexems.shift();
   if (lexem.type === 'symbol' && lexem.value === '.') {
     outXml += `<symbol> ${escapeHtml(lexem.value)} </symbol>\n`;
     lexem = lexems.shift();
     if (lexem.type !== 'identifier') throw new Error('Expected identifier');
     outXml += `<identifier>${lexem.value}</identifier>`;
+    lexem = lexems.shift();
   }
 
-  lexem = lexems.shift();
-  if (lexem.type !== 'symbol' || lexem.value !== '(') throw new Error('Expected (');
+  if (lexem.type !== 'symbol' || lexem.value !== '(') throw new Error(`Expected ( got ${lexem.value}`);
   outXml += `<symbol> ${escapeHtml(lexem.value)} </symbol>\n`;
 
   if (lexems[0].value === ')') {
     lexem = lexems.shift();
-    if (lexem.type !== 'symbol' || lexem.value !== ')') throw new Error('Expected )');
+    if (lexem.type !== 'symbol' || lexem.value !== ')') throw new Error(`Expected ) got ${lexem.value}`);
     outXml += `<symbol> ${escapeHtml(lexem.value)} </symbol>\n`;
     return outXml;
   }
 
   outXml += compileExpressionList(lexems);
   lexem = lexems.shift();
-  if (lexem.type !== 'symbol' || lexem.value !== ')') throw new Error('Expected )');
+  if (lexem.type !== 'symbol' || lexem.value !== ')') throw new Error(`Expected ) got ${lexem.value}`);
   outXml += `<symbol> ${escapeHtml(lexem.value)} </symbol>\n`;
   return outXml;
 };
