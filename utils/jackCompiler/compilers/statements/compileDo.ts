@@ -3,7 +3,7 @@ import { Lexem } from '../../types';
 import { compileSubroutineCall } from '../compileSubroutineCall';
 
 export const compileDo = (lexems: Lexem[]) => {
-  let outXml = '<doStatement>';
+  let outXml = '<doStatement>\n';
 
   let lexem = lexems.shift();
   if (lexem.type !== 'keyword' && lexem.value !== 'do') {
@@ -18,6 +18,6 @@ export const compileDo = (lexems: Lexem[]) => {
   }
   outXml += `<symbol> ${escapeHtml(lexem.value)} </symbol>\n`;
 
-  outXml += '</doStatement>';
+  outXml += '</doStatement>\n';
   return outXml;
 };

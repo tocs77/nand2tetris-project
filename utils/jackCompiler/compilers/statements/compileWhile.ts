@@ -4,7 +4,7 @@ import { compileExpression } from '../compileExpression';
 import { compileStatements } from '../compileStatements';
 
 export const compileWhile = (lexems: Lexem[]) => {
-  let outXml = '<whileStatement>';
+  let outXml = '<whileStatement>\n';
   let lexem = lexems.shift();
   if (lexem.type !== 'keyword' && lexem.value !== 'while') {
     throw new Error(`Expected do keyword ${lexem.type}-${lexem.value}`);
@@ -38,6 +38,6 @@ export const compileWhile = (lexems: Lexem[]) => {
   }
   outXml += `<symbol> ${escapeHtml(lexem.value)} </symbol>\n`;
 
-  outXml += '</whileStatement>';
+  outXml += '</whileStatement>\n';
   return outXml;
 };

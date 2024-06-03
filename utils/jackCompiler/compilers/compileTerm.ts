@@ -4,11 +4,11 @@ import { compileSubroutineCall } from './compileSubroutineCall';
 import { compileExpression } from './compileExpression';
 
 export const compileTerm = (lexems: Lexem[]) => {
-  let outXml = '<term>';
+  let outXml = '<term>\n';
 
   outXml += parseTerm(lexems);
 
-  outXml += '</term>';
+  outXml += '</term>\n';
   return outXml;
 };
 
@@ -25,17 +25,17 @@ export const parseTerm = (lexems: Lexem[]) => {
     }
 
     let lexem = lexems.shift();
-    return `<identifier>${lexem.value}</identifier>`;
+    return `<identifier>${lexem.value}</identifier>\n`;
   }
 
   if (lexems[0].type === 'integerConstant') {
     let lexem = lexems.shift();
-    return `<integerConstant>${lexem.value}</integerConstant>`;
+    return `<integerConstant>${lexem.value}</integerConstant>\n`;
   }
 
   if (lexems[0].type === 'stringConstant') {
     let lexem = lexems.shift();
-    return `<stringConstant>${lexem.value}</stringConstant>`;
+    return `<stringConstant>${lexem.value}</stringConstant>\n`;
   }
 
   if (lexems[0].type === 'keyword') {
@@ -43,7 +43,7 @@ export const parseTerm = (lexems: Lexem[]) => {
     if (lexem.value !== 'true' && lexem.value !== 'false' && lexem.value !== 'null' && lexem.value !== 'this') {
       throw new Error(`Expected KeywordConstant ${lexem.type}-${lexem.value}`);
     }
-    return `<keyword>${lexem.value}</keyword>`;
+    return `<keyword>${lexem.value}</keyword>\n`;
   }
   if (lexems[0].value === '(') {
     let lexem = lexems.shift();
@@ -77,7 +77,7 @@ export const compileArrayIndex = (lexems: Lexem[]) => {
   if (lexem.type !== 'identifier') {
     throw new Error(`Expected identifier ${lexem.type}-${lexem.value}`);
   }
-  let outXml = `<identifier>${lexem.value}</identifier>`;
+  let outXml = `<identifier>${lexem.value}</identifier>\n`;
   lexem = lexems.shift();
   if (lexem.type !== 'symbol' && lexem.value !== '[') {
     throw new Error(`Expected [ ${lexem.type}-${lexem.value}`);

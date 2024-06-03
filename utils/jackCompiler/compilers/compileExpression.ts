@@ -3,7 +3,7 @@ import { Lexem } from '../types';
 import { compileTerm } from './compileTerm';
 
 export const compileExpression = (lexems: Lexem[]) => {
-  let outXml = '<expression>';
+  let outXml = '<expression>\n';
 
   outXml += compileTerm(lexems);
 
@@ -29,7 +29,7 @@ export const compileExpression = (lexems: Lexem[]) => {
     outXml += `<symbol> ${escapeHtml(lexem.value)} </symbol>\n`;
     outXml += compileTerm(lexems);
   }
-  outXml += '</expression>';
+  outXml += '</expression>\n';
 
   return outXml;
 };

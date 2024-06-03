@@ -4,9 +4,9 @@ import { compileType } from './compileType';
 
 export const compileParameterList = (lexems: Lexem[]) => {
   if (lexems.length === 0) return '';
-  let outXml = '<parameterList>';
+  let outXml = '<parameterList>\n';
   if (lexems[0].type === 'symbol' && lexems[0].value === ')') {
-    outXml += '</parameterList>';
+    outXml += '</parameterList>\n';
     return outXml;
   }
 
@@ -37,6 +37,6 @@ export const compileParameterList = (lexems: Lexem[]) => {
     }
     outXml += `<identifier> ${lexem.value} </identifier>\n`;
   }
-  outXml += '</parameterList>';
+  outXml += '</parameterList>\n';
   return outXml;
 };

@@ -16,6 +16,7 @@ function compileClass(lexems: Lexem[]) {
     throw new Error(`Expected class keyword ${lexem.type}-${lexem.value}`);
   }
   outXml += `<class>\n`;
+  outXml += `<keyword> ${lexem.value} </keyword>\n`;
 
   lexem = lexems.shift();
   if (lexem.type !== 'identifier') {

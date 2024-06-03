@@ -3,7 +3,7 @@ import { Lexem } from '../../types';
 import { compileExpression } from '../compileExpression';
 
 export const compileReturn = (lexems: Lexem[]) => {
-  let outXml = '<returnStatement>';
+  let outXml = '<returnStatement>\n';
   let lexem = lexems.shift();
   if (lexem.type !== 'keyword' && lexem.value !== 'return') {
     throw new Error(`Expected do keyword ${lexem.type}-${lexem.value}`);
@@ -18,6 +18,6 @@ export const compileReturn = (lexems: Lexem[]) => {
   }
   outXml += `<symbol> ${escapeHtml(lexem.value)} </symbol>\n`;
 
-  outXml += '</returnStatement>';
+  outXml += '</returnStatement>\n';
   return outXml;
 };

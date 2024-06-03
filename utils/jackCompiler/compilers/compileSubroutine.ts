@@ -31,6 +31,9 @@ export function compileSubroutine(lexems: Lexem[]) {
   outXml += compileParameterList(lexems);
   lexem = lexems.shift();
   if (lexem.type !== 'symbol' && lexem.value !== ')') throw new Error(`Expected ) ${lexem.type}-${lexem.value}`);
+  outXml += `<symbol> ${escapeHtml(lexem.value)} </symbol>\n`;
+
+  outXml += '<subroutineBody>\n';
 
   lexem = lexems.shift();
   if (lexem.type !== 'symbol' && lexem.value !== '{') throw new Error(`Expected { ${lexem.type}-${lexem.value}`);
@@ -40,6 +43,7 @@ export function compileSubroutine(lexems: Lexem[]) {
   lexem = lexems.shift();
   if (lexem.type !== 'symbol' && lexem.value !== '}') throw new Error(`Expected } ${lexem.type}-${lexem.value}`);
   outXml += `<symbol> ${escapeHtml(lexem.value)} </symbol>\n`;
+  outXml += '</subroutineBody>\n';
   outXml += `</subroutineDec>\n`;
   outXml += compileSubroutine(lexems);
 

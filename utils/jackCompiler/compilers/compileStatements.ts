@@ -7,13 +7,13 @@ import { compileWhile } from './statements/compileWhile';
 import { compileReturn } from './statements/compileReturn';
 
 export const compileStatements = (lexems: Lexem[]) => {
-  let outXml = '<statements>';
+  let outXml = '<statements>\n';
   while (true) {
     const statement = compileStatement(lexems);
     if (statement === '') break;
     outXml += statement;
   }
-  outXml += '</statements>';
+  outXml += '</statements>\n';
   return outXml;
 };
 

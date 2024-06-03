@@ -1,11 +1,10 @@
 import { escapeHtml } from '../../utils';
-import { Lexem, keywords } from '../../types';
-import { compileSubroutineCall } from '../compileSubroutineCall';
+import { Lexem } from '../../types';
 import { compileExpression } from '../compileExpression';
 import { compileStatements } from '../compileStatements';
 
 export const compileIf = (lexems: Lexem[]) => {
-  let outXml = '<ifStatement>';
+  let outXml = '<ifStatement>\n';
   let lexem = lexems.shift();
   if (lexem.type !== 'keyword' && lexem.value !== 'if') {
     throw new Error(`Expected do keyword ${lexem.type}-${lexem.value}`);
@@ -44,7 +43,7 @@ export const compileIf = (lexems: Lexem[]) => {
   if (lexems[0].type === 'keyword' && lexems[0].value === 'else') {
     lexem = lexems.shift();
     outXml += `<keyword> ${escapeHtml(lexem.value)} </keyword>\n`;
-    
+
     lexem = lexems.shift();
     if (lexem.type !== 'symbol' && lexem.value !== '{') {
       throw new Error(`Expected ( ${lexem.type}-${lexem.value}`);
@@ -57,8 +56,9 @@ export const compileIf = (lexems: Lexem[]) => {
     if (lexem.type !== 'symbol' && lexem.value !== '}') {
       throw new Error(`Expected ( ${lexem.type}-${lexem.value}`);
     }
+    outXml += `<symbol> ${escapeHtml(lexem.value)} </symbol>\n`;
   }
 
-  outXml += '</ifStatement>';
+  outXml += '</ifStatement>\n';
   return outXml;
 };

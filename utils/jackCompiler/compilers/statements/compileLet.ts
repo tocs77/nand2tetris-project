@@ -3,7 +3,7 @@ import { Lexem } from '../../types';
 import { compileExpression } from '../compileExpression';
 
 export const compileLet = (lexems: Lexem[]) => {
-  let outXml = '<letStatement>';
+  let outXml = '<letStatement>\n';
 
   let lexem = lexems.shift();
   if (lexem.type !== 'keyword' && lexem.value !== 'let') {
@@ -41,6 +41,6 @@ export const compileLet = (lexems: Lexem[]) => {
   }
   outXml += `<symbol> ${escapeHtml(lexem.value)} </symbol>\n`;
 
-  outXml += '</letStatement>';
+  outXml += '</letStatement>\n';
   return outXml;
 };

@@ -5,14 +5,14 @@ import { compileExpression } from './compileExpression';
 export const compileSubroutineCall = (lexems: Lexem[]) => {
   let lexem = lexems.shift();
   if (lexem.type !== 'identifier') throw new Error('Expected identifier');
-  let outXml = `<identifier>${lexem.value}</identifier>`;
+  let outXml = `<identifier>${lexem.value}</identifier>\n`;
 
   lexem = lexems.shift();
   if (lexem.type === 'symbol' && lexem.value === '.') {
     outXml += `<symbol> ${escapeHtml(lexem.value)} </symbol>\n`;
     lexem = lexems.shift();
     if (lexem.type !== 'identifier') throw new Error('Expected identifier');
-    outXml += `<identifier>${lexem.value}</identifier>`;
+    outXml += `<identifier>${lexem.value}</identifier>\n`;
     lexem = lexems.shift();
   }
 
@@ -20,6 +20,9 @@ export const compileSubroutineCall = (lexems: Lexem[]) => {
   outXml += `<symbol> ${escapeHtml(lexem.value)} </symbol>\n`;
 
   if (lexems[0].value === ')') {
+    //empty expression list
+    outXml += '<expressionList>\n';
+    outXml += '</expressionList>\n';
     lexem = lexems.shift();
     if (lexem.type !== 'symbol' || lexem.value !== ')') throw new Error(`Expected ) got ${lexem.value}`);
     outXml += `<symbol> ${escapeHtml(lexem.value)} </symbol>\n`;
@@ -34,7 +37,8 @@ export const compileSubroutineCall = (lexems: Lexem[]) => {
 };
 
 const compileExpressionList = (lexems: Lexem[]) => {
-  let outXml = compileExpression(lexems);
+  let outXml = '<expressionList>\n';
+  outXml += compileExpression(lexems);
 
   while (true) {
     if (lexems.length === 0) break;
@@ -43,6 +47,6 @@ const compileExpressionList = (lexems: Lexem[]) => {
     outXml += `<symbol> ${escapeHtml(lexem.value)} </symbol>\n`;
     outXml += compileExpression(lexems);
   }
-
+  outXml += '</expressionList>\n';
   return outXml;
 };
