@@ -1,6 +1,10 @@
-import { escapeHtml } from '../utils';
 import { Lexem } from '../types';
-import { compileSubroutineCall } from './compileSubroutineCall';
+
+import { compileLet } from './statements/compileLet';
+import { compileDo } from './statements/compileDo';
+import { compileIf } from './statements/compileIf';
+import { compileWhile } from './statements/compileWhile';
+import { compileReturn } from './statements/compileReturn';
 
 export const compileStatements = (lexems: Lexem[]) => {
   let outXml = '<statements>';
@@ -40,27 +44,3 @@ export const compileStatement = (lexems: Lexem[]) => {
       return compileReturn(lexems);
   }
 };
-
-const compileDo = (lexems: Lexem[]) => {
-  let outXml = '<doStatement>';
-
-  let lexem = lexems.shift();
-  if (lexem.type !== 'keyword' && lexem.value !== 'do') {
-    throw new Error(`Expected do keyword ${lexem.type}-${lexem.value}`);
-  }
-  outXml += `<keyword> ${lexem.value} </keyword>\n`;
-  outXml += compileSubroutineCall(lexems);
-  
-  lexem = lexems.shift();
-  if (lexem.type !== 'symbol' && lexem.value !== ';') {
-    throw new Error(`Expected ; ${lexem.type}-${lexem.value}`);
-  }
-  outXml += `<symbol> ${escapeHtml(lexem.value)} </symbol>\n`;
-
-  outXml += '</doStatement>';
-  return outXml;
-};
-const compileLet = (lexems: Lexem[]) => {};
-const compileWhile = (lexems: Lexem[]) => {};
-const compileIf = (lexems: Lexem[]) => {};
-const compileReturn = (lexems: Lexem[]) => {};
