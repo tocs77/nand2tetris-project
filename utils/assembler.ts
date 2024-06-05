@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { assmebly } from './assembly.mjs';
+import { assmebly } from './assembly';
 
 // Check if a file path was provided as a command-line argument
 if (process.argv.length < 3) {

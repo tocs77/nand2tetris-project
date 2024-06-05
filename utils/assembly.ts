@@ -1,4 +1,4 @@
-const symbols = {
+const symbols: Record<string, number> = {
   R0: 0,
   R1: 1,
   R2: 2,
@@ -24,7 +24,7 @@ const symbols = {
   THAT: 4,
 };
 
-const destinations = {
+const destinations: Record<string, string> = {
   M: '001',
   D: '010',
   MD: '011',
@@ -34,7 +34,7 @@ const destinations = {
   AMD: '111',
 };
 
-const jumps = {
+const jumps: Record<string, string> = {
   JGT: '001',
   JEQ: '010',
   JGE: '011',
@@ -44,7 +44,7 @@ const jumps = {
   JMP: '111',
 };
 
-const a0Commands = {
+const a0Commands: Record<string, string> = {
   0: '101010',
   1: '111111',
   '-1': '111010',
@@ -65,7 +65,7 @@ const a0Commands = {
   'D|A': '010101',
 };
 
-const a1Commands = {
+const a1Commands: Record<string, string> = {
   M: '110000',
   '!M': '110001',
   '-M': '110011',
@@ -80,7 +80,7 @@ const a1Commands = {
 
 let nextMemoryAddress = 16;
 
-export const assmebly = (source) => {
+export const assmebly = (source: string) => {
   const cleanedSource = clearSource(source);
 
   let lineNum = 0;
@@ -112,7 +112,7 @@ export const assmebly = (source) => {
   return assembledCode;
 };
 
-const clearSource = (source) => {
+const clearSource = (source: string) => {
   const cleanSource = [];
   const cleanedSource = source.replaceAll('\r', '').replaceAll(' ', '');
   const lines = cleanedSource.split('\n');
@@ -123,7 +123,7 @@ const clearSource = (source) => {
   return cleanSource;
 };
 
-const parseAcommand = (codeLine) => {
+const parseAcommand = (codeLine: string) => {
   let symbol = codeLine.substring(1);
   let value = parseInt(symbol);
 
@@ -139,7 +139,7 @@ const parseAcommand = (codeLine) => {
   return `0${paddedBinary}\n`;
 };
 
-const parseCcommand = (codeLine) => {
+const parseCcommand = (codeLine: string) => {
   if (!codeLine.includes('=')) {
     codeLine = `=${codeLine}`;
   }
@@ -152,6 +152,7 @@ const parseCcommand = (codeLine) => {
     console.error(`No comp found in ${codeLine}`);
     process.exit(1);
   }
+
   if (comp in a0Commands) {
     compBinary = `0${a0Commands[comp]}`;
   }

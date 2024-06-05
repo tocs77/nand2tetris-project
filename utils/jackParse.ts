@@ -12,12 +12,12 @@ if (process.argv.length < 3) {
 // The file path is the third argument (index 2)
 const filePath = process.argv[2];
 if (fs.lstatSync(filePath).isDirectory()) {
-  tokenizeDirectory(filePath);
+  parseDirectory(filePath);
 } else {
-  tokenizeFile(filePath);
+  parseFile(filePath);
 }
 
-function tokenizeFile(filePath: string) {
+function parseFile(filePath: string) {
   const ext = path.extname(filePath).toLowerCase();
   if (ext !== '.jack') {
     console.error('Please provide a .jack file.');
@@ -44,12 +44,12 @@ function tokenizeFile(filePath: string) {
   });
 }
 
-function tokenizeDirectory(dirPath: string) {
+function parseDirectory(dirPath: string) {
   const files = fs.readdirSync(dirPath);
   const vmFiles = collectJackFiles(files, dirPath);
 
   for (const file of vmFiles) {
-    tokenizeFile(path.join(dirPath, file));
+    parseFile(path.join(dirPath, file));
   }
 }
 
