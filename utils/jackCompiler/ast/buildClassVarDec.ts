@@ -2,12 +2,17 @@ import { ClassVarDec } from './types';
 
 export const buildClassVarDec = (data: any): ClassVarDec[] => {
   const classVarDec: ClassVarDec[] = [];
-  console.log('buildClassVarDec', data);
+
   let lexem = data.shift();
   const varType = lexem['keyword'][0]['#text'];
 
   lexem = data.shift();
-  const type = lexem['keyword'][0]['#text'];
+  let type;
+  try {
+    type = lexem['keyword'][0]['#text'];
+  } catch (error) {
+    type = lexem['identifier'][0]['#text'];
+  }
 
   for (const lexem of data) {
     for (const k in lexem) {
@@ -15,6 +20,5 @@ export const buildClassVarDec = (data: any): ClassVarDec[] => {
       break;
     }
   }
-  console.log('buildClassVarDec', classVarDec);
   return classVarDec;
 };

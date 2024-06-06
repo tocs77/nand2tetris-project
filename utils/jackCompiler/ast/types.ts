@@ -15,7 +15,7 @@ export interface SubroutineDec {
   name: string;
   returnType: ReturnType;
   parameterList: Parameter[];
-  subroutineBody: any[];
+  subroutineBody: SubroutineBody;
 }
 
 export interface Parameter {
@@ -25,3 +25,10 @@ export interface Parameter {
 
 type Type = 'int' | 'char' | 'boolean' | string;
 type ReturnType = Type | 'void';
+
+export interface SubroutineBody {
+  varDec: Parameter[];
+  statements: Statement[];
+}
+
+export type Statement = any;
