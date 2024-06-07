@@ -31,4 +31,91 @@ export interface SubroutineBody {
   statements: Statement[];
 }
 
-export type Statement = any;
+export interface SubroutineCall {
+  callType: 'function' | 'method';
+  varOrClassName?: string;
+  subroutineName: string;
+  expressionList: Expression[];
+}
+
+export type Statement = IfStatement | DoStatement | LetStatement | WhileStatement | ReturnStatement;
+
+export interface IfStatement {
+  type: 'ifStatement';
+}
+export interface DoStatement {
+  type: 'doStatement';
+  subroutineCall: SubroutineCall;
+}
+export interface LetStatement {
+  type: 'letStatement';
+}
+export interface WhileStatement {
+  type: 'whileStatement';
+}
+export interface ReturnStatement {
+  type: 'returnStatement';
+  expression?: Expression;
+}
+
+export interface Expression {
+  term: Term;
+  terms: OpTerm[];
+}
+
+export interface OpTerm {
+  operator: Operator;
+  term: Term;
+}
+
+export type Term =
+  | IntegerConstantTerm
+  | StringConstantTerm
+  | KeywordConstantTerm
+  | ArrayTerm
+  | SubroutineCallTerm
+  | UnaryOpTerm
+  | ParenTerm
+  | VarNameTerm;
+
+export interface IntegerConstantTerm {
+  type: 'integerConstant';
+  value: number;
+}
+
+export interface StringConstantTerm {
+  type: 'stringConstant';
+  value: string;
+}
+export interface KeywordConstantTerm {
+  type: 'keywordConstant';
+  value: 'true' | 'false' | 'null' | 'this';
+}
+export interface VarNameTerm {
+  type: 'varName';
+  value: string;
+}
+
+export interface ArrayTerm {
+  type: 'array';
+  name: string;
+  expression: Expression;
+}
+
+export interface SubroutineCallTerm {
+  type: 'subroutineCall';
+  value: SubroutineCall;
+}
+export interface UnaryOpTerm {
+  type: 'unaryOp';
+  operator: UnaryOperator;
+  term: Term;
+}
+
+export interface ParenTerm {
+  type: 'paren';
+  expression: Expression;
+}
+
+type Operator = '+' | '-' | '*' | '/' | '&' | '|' | '<' | '>' | '=';
+type UnaryOperator = '~' | '-';
