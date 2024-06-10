@@ -42,17 +42,29 @@ export type Statement = IfStatement | DoStatement | LetStatement | WhileStatemen
 
 export interface IfStatement {
   type: 'ifStatement';
+  condition: Expression;
+  statements: Statement[];
+  elseStatements?: Statement[];
 }
+
 export interface DoStatement {
   type: 'doStatement';
   subroutineCall: SubroutineCall;
 }
+
 export interface LetStatement {
   type: 'letStatement';
+  varName: string;
+  arrayExpression?: Expression;
+  expression: Expression;
 }
+
 export interface WhileStatement {
   type: 'whileStatement';
+  condition: Expression;
+  statements: Statement[];
 }
+
 export interface ReturnStatement {
   type: 'returnStatement';
   expression?: Expression;

@@ -48,10 +48,11 @@ const buildTerm = (data: any): Term => {
         }
       }
     }
-    if (val === '(') {
+    if (val === '(' || val === '.') {
       return { type: 'subroutineCall', value: buildSubroutineCall(data) };
     }
   }
+  console.log('Error build term', lexemType, value);
   throw new Error('Build term error');
 };
 

@@ -8,7 +8,6 @@ import { buildSubroutineDec } from './buildsubroutineDec';
 export const buildAST = (xmlTree: string): ClassNode | void => {
   const cn: ClassNode = { name: '', classVarDec: [], subroutineDec: [] };
   const parser = new XMLParser({ preserveOrder: true, alwaysCreateTextNode: true, ignoreAttributes: true });
-  console.log(xmlTree);
   const data = parser.parse(xmlTree)[0].class;
 
   for (const lexem of data) {
@@ -19,6 +18,6 @@ export const buildAST = (xmlTree: string): ClassNode | void => {
       break;
     }
   }
-  console.log('----------------------------');
-  console.log(util.inspect(cn, { showHidden: false, depth: null, colors: true }));
+
+ // console.log(util.inspect(cn, { showHidden: false, depth: null, colors: true }));
 };
