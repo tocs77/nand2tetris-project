@@ -5,7 +5,7 @@ import { ClassNode } from './types';
 import { buildClassVarDec } from './buildClassVarDec';
 import { buildSubroutineDec } from './buildsubroutineDec';
 
-export const buildAST = (xmlTree: string): ClassNode | void => {
+export const buildAST = (xmlTree: string): ClassNode => {
   const cn: ClassNode = { name: '', classVarDec: [], subroutineDec: [] };
   const parser = new XMLParser({ preserveOrder: true, alwaysCreateTextNode: true, ignoreAttributes: true });
   const data = parser.parse(xmlTree)[0].class;
@@ -18,6 +18,6 @@ export const buildAST = (xmlTree: string): ClassNode | void => {
       break;
     }
   }
-
- // console.log(util.inspect(cn, { showHidden: false, depth: null, colors: true }));
+  return cn;
+  // console.log(util.inspect(cn, { showHidden: false, depth: null, colors: true }));
 };
