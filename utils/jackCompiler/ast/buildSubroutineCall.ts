@@ -16,11 +16,11 @@ export const buildSubroutineCall = (data: any): SubroutineCall => {
     for (const k in lexem) {
       if (k === 'expressionList') {
         for (const expression of lexem[k]) {
-          scall.expressionList.push(buildExpression(expression['expression']));
+          if (expression['expression']) scall.expressionList.push(buildExpression(expression['expression']));
         }
       }
       break;
     }
   }
-  return scall; 
+  return scall;
 };

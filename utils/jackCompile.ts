@@ -36,9 +36,8 @@ function compileFile(filePath: string) {
     }
     const lexems = tokenizer(data);
     const xml = parser(lexems);
-    vmGenerator(xml);
-    return;
-    fs.writeFile(`${fileDir}/${fileName.replace('.jack', '.vm')}`, xml, (err) => {
+    const vmCode = vmGenerator(xml);
+    fs.writeFile(`${fileDir}/${fileName.replace('.jack', '.vm')}`, vmCode, (err) => {
       if (err) {
         console.error('Error writing file:', err);
         process.exit(1);

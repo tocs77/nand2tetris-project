@@ -7,7 +7,7 @@ export interface ClassNode {
 export interface ClassVarDec {
   varType: 'static' | 'field';
   type: Type;
-  name: string[];
+  name: string;
 }
 
 export interface SubroutineDec {
@@ -129,5 +129,5 @@ export interface ParenTerm {
   expression: Expression;
 }
 
-type Operator = '+' | '-' | '*' | '/' | '&' | '|' | '<' | '>' | '=';
-type UnaryOperator = '~' | '-';
+export type Operator = '+' | '-' | '*' | '/' | '&' | '|' | '<' | '>' | '=';
+export type UnaryOperator = '~' | '-';

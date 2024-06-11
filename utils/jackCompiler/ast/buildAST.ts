@@ -1,5 +1,3 @@
-import util from 'util';
-
 import { XMLParser } from 'fast-xml-parser';
 import { ClassNode } from './types';
 import { buildClassVarDec } from './buildClassVarDec';

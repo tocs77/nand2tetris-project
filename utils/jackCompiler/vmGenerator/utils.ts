@@ -1,6 +1,13 @@
 import { SymbolKind, SymbolTable, SymbolType } from './types';
 
-export const addSymbolTableEntry = (symbolTable: SymbolTable, name: string, type: SymbolType, kind: SymbolKind) => {
+interface AddSymbolTableEntryArgs {
+  symbolTable: SymbolTable;
+  name: string;
+  type: SymbolType;
+  kind: SymbolKind;
+}
+
+export const addSymbolTableEntry = ({ kind, name, symbolTable, type }: AddSymbolTableEntryArgs) => {
   if (name in symbolTable) {
     throw new Error(`Symbol ${name} already exists`);
   }
