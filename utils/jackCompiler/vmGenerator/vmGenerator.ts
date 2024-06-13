@@ -36,8 +36,11 @@ export const generateSubroutineDec = (subroutineDec: SubroutineDec, classSymbolT
     addSymbolTableEntry({ symbolTable: functionSymbolTable, name: local.name, type: local.type, kind: 'local' });
   }
   let outVm = '';
-  outVm += `function ${subroutineDec.name} ${subroutineDec.parameterList.length}\n`;
+  outVm += `function ${subroutineDec.name} ${subroutineDec.subroutineBody.varDec.length}\n`;
   for (const statement of subroutineDec.subroutineBody.statements) {
+    if (statement.type === 'returnStatement' && subroutineDec.returnType === 'void') {
+      outVm += 'push constant 0\n'; // return 0 for void functions
+    }
     outVm += generateStatement(statement, classSymbolTable, functionSymbolTable);
   }
   return outVm;

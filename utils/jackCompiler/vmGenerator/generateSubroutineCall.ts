@@ -14,9 +14,9 @@ export const generateSubroutineCall = (
   }
 
   if (functionSymbolTable['this']) {
-    outVm += `call ${functionSymbolTable['this'].type}.${subroutineCall.subroutineName} ${subroutineCall.expressionList.length}`;
+    outVm += `call ${functionSymbolTable['this'].type}.${subroutineCall.subroutineName} ${subroutineCall.expressionList.length}\n`;
   } else {
-    outVm += `call ${subroutineCall.varOrClassName}.${subroutineCall.subroutineName} ${subroutineCall.expressionList.length}`;
+    outVm += `call ${subroutineCall.varOrClassName}.${subroutineCall.subroutineName} ${subroutineCall.expressionList.length}\n`;
   }
   return outVm;
 };

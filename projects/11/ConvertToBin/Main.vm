@@ -1,0 +1,109 @@
+function Main.main 1
+push constant 8001
+push constant 16
+push constant 1
+neg
+call Main.fillMemory 3
+pop temp 0
+push constant 8000
+call Memory.peek 1
+pop local 0
+push local 0
+call Main.convert 1
+pop temp 0
+push constant 0
+return
+function Main.convert 3
+push constant 0
+not
+pop local 2
+label while_0.8578717751905316
+push local 2
+not
+if-goto while_0.8578717751905316_end
+push local 1
+push constant 1
+add
+pop local 1
+push local 0
+call Main.nextMask 1
+pop local 0
+push local 1
+push constant 16
+gt
+not
+if-goto if_0.5256410665695848_true
+goto if_0.5256410665695848_false
+label if_0.5256410665695848_true
+push argument 0
+push local 0
+and
+push constant 0
+eq
+not
+if-goto if_0.6602969113811021_true
+goto if_0.6602969113811021_false
+label if_0.6602969113811021_true
+push constant 8000
+push local 1
+add
+push constant 1
+call Memory.poke 2
+pop temp 0
+goto if_0.6602969113811021_end
+label if_0.6602969113811021_false
+push constant 8000
+push local 1
+add
+push constant 0
+call Memory.poke 2
+pop temp 0
+label if_0.6602969113811021_end
+goto if_0.5256410665695848_end
+label if_0.5256410665695848_false
+push constant 0
+pop local 2
+label if_0.5256410665695848_end
+goto while_0.8578717751905316
+label while_0.8578717751905316_end
+push constant 0
+return
+function Main.nextMask 0
+push argument 0
+push constant 0
+eq
+if-goto if_0.4920295860737205_true
+goto if_0.4920295860737205_false
+label if_0.4920295860737205_true
+push constant 1
+return
+goto if_0.4920295860737205_end
+label if_0.4920295860737205_false
+push argument 0
+push constant 2
+call Math.multiply 2
+return
+label if_0.4920295860737205_end
+function Main.fillMemory 0
+label while_0.412855594091726
+push argument 1
+push constant 0
+gt
+not
+if-goto while_0.412855594091726_end
+push argument 0
+push argument 2
+call Memory.poke 2
+pop temp 0
+push argument 1
+push constant 1
+sub
+pop argument 1
+push argument 0
+push constant 1
+add
+pop argument 0
+goto while_0.412855594091726
+label while_0.412855594091726_end
+push constant 0
+return

@@ -1,4 +1,4 @@
-import { Expression, Term, Operator, UnaryOpTerm, UnaryOperator } from '../ast/types';
+import { Expression, Term, Operator, UnaryOpTerm, UnaryOperator, KeywordConstantTerm } from '../ast/types';
 import { generateSubroutineCall } from './generateSubroutineCall';
 import { SymbolTable } from './types';
 
@@ -43,6 +43,11 @@ const generateTerm = (term: Term, classSymbolTable: SymbolTable, functionSymbolT
     return outVm;
   }
 
+  if (term.type === 'keywordConstant') {
+    outVm += generateKeywordConstant(term.value);
+    return outVm;
+  }
+
   console.log('Not implemented', term);
   throw new Error('not implemented');
 };
@@ -78,6 +83,21 @@ const generateUnaryOperator = (op: UnaryOperator) => {
     case '~':
       return 'not\n';
 
+    default:
+      throw new Error('not implemented');
+  }
+};
+
+const generateKeywordConstant = (keyword: KeywordConstantTerm['value']) => {
+  switch (String(keyword)) {
+    case 'true':
+      return 'push constant 0\nnot\n';
+    case 'false':
+      return 'push constant 0\n';
+    case 'this':
+      return 'push pointer 0\n';
+    case 'null':
+      return 'push constant 0\n';
     default:
       throw new Error('not implemented');
   }
