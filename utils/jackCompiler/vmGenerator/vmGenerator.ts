@@ -13,7 +13,7 @@ export const vmGenerator = (xml: string) => {
       symbolTable: classSymbolTable,
       name: classVarDec.name,
       type: classVarDec.type,
-      kind: classVarDec.varType,
+      kind: classVarDec.varType === 'field' ? 'this' : classVarDec.varType,
     });
   }
   for (const subroutineDec of ast.subroutineDec) {
@@ -24,8 +24,11 @@ export const vmGenerator = (xml: string) => {
 
 export const generateSubroutineDec = (subroutineDec: SubroutineDec, classSymbolTable: SymbolTable, className: string) => {
   const functionSymbolTable: SymbolTable = {};
-  if (subroutineDec.type === 'method') {
-    addSymbolTableEntry({ symbolTable: functionSymbolTable, name: 'this', type: className, kind: 'argument' });
+  // if (subroutineDec.type === 'method') {
+  //   addSymbolTableEntry({ symbolTable: functionSymbolTable, name: 'this', type: className, kind: 'argument' });
+  // }
+  if (subroutineDec.type === 'constructor') {
+    addSymbolTableEntry({ symbolTable: functionSymbolTable, name: 'this', type: className, kind: 'pointer' });
   }
 
   for (const argument of subroutineDec.parameterList) {
@@ -36,12 +39,28 @@ export const generateSubroutineDec = (subroutineDec: SubroutineDec, classSymbolT
     addSymbolTableEntry({ symbolTable: functionSymbolTable, name: local.name, type: local.type, kind: 'local' });
   }
   let outVm = '';
+
   outVm += `function ${subroutineDec.name} ${subroutineDec.subroutineBody.varDec.length}\n`;
+  if (subroutineDec.type === 'constructor') {
+    let fieldsCount = 0;
+    for (const variable in classSymbolTable) {
+      if (classSymbolTable[variable].kind === 'field' || classSymbolTable[variable].kind === 'this') {
+        fieldsCount++;
+      }
+    }
+    outVm += `push constant ${fieldsCount}\n`;
+    outVm += 'call Memory.alloc 1\n';
+    outVm += 'pop pointer 0\n';
+  }
+  if (subroutineDec.type === 'method') {
+    outVm += 'push argument 0\n';
+    outVm += 'pop pointer 0\n';
+  }
   for (const statement of subroutineDec.subroutineBody.statements) {
     if (statement.type === 'returnStatement' && subroutineDec.returnType === 'void') {
       outVm += 'push constant 0\n'; // return 0 for void functions
     }
-    outVm += generateStatement(statement, classSymbolTable, functionSymbolTable);
+    outVm += generateStatement(statement, classSymbolTable, functionSymbolTable, className);
   }
   return outVm;
 };

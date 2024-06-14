@@ -1,31 +1,36 @@
-import { Expression, Term, Operator, UnaryOpTerm, UnaryOperator, KeywordConstantTerm } from '../ast/types';
+import { Expression, Term, Operator, UnaryOperator, KeywordConstantTerm } from '../ast/types';
 import { generateSubroutineCall } from './generateSubroutineCall';
 import { SymbolTable } from './types';
 
-export const generateExpression = (expression: Expression, classSymbolTable: SymbolTable, functionSymbolTable: SymbolTable) => {
+export const generateExpression = (
+  expression: Expression,
+  classSymbolTable: SymbolTable,
+  functionSymbolTable: SymbolTable,
+  className: string,
+) => {
   let outVm = '';
-  outVm += generateTerm(expression.term, classSymbolTable, functionSymbolTable);
+  outVm += generateTerm(expression.term, classSymbolTable, functionSymbolTable, className);
   for (const opTerm of expression.terms) {
-    outVm += generateTerm(opTerm.term, classSymbolTable, functionSymbolTable);
+    outVm += generateTerm(opTerm.term, classSymbolTable, functionSymbolTable, className);
     outVm += generateOperator(opTerm.operator);
   }
 
   return outVm;
 };
 
-const generateTerm = (term: Term, classSymbolTable: SymbolTable, functionSymbolTable: SymbolTable) => {
+const generateTerm = (term: Term, classSymbolTable: SymbolTable, functionSymbolTable: SymbolTable, className: string) => {
   let outVm = '';
   if (term.type === 'integerConstant') {
     outVm += `push constant ${term.value}\n`;
     return outVm;
   }
   if (term.type === 'paren') {
-    outVm += generateExpression(term.expression, classSymbolTable, functionSymbolTable);
+    outVm += generateExpression(term.expression, classSymbolTable, functionSymbolTable, className);
     return outVm;
   }
 
   if (term.type === 'unaryOp') {
-    outVm += generateTerm(term.term, classSymbolTable, functionSymbolTable);
+    outVm += generateTerm(term.term, classSymbolTable, functionSymbolTable, className);
     outVm += generateUnaryOperator(term.operator);
     return outVm;
   }
@@ -39,7 +44,7 @@ const generateTerm = (term: Term, classSymbolTable: SymbolTable, functionSymbolT
   }
 
   if (term.type === 'subroutineCall') {
-    outVm += generateSubroutineCall(term.value, classSymbolTable, functionSymbolTable);
+    outVm += generateSubroutineCall(term.value, classSymbolTable, functionSymbolTable, className);
     return outVm;
   }
 

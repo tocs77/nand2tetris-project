@@ -2,8 +2,6 @@ import { buildStatements } from './buildStatements';
 import { Parameter, SubroutineBody, SubroutineDec } from './types';
 
 export const buildSubroutineDec = (data: any, className: string): SubroutineDec => {
-  // console.log('data', data);
-
   const sd: SubroutineDec = {
     type: 'constructor',
     name: '',
@@ -16,7 +14,11 @@ export const buildSubroutineDec = (data: any, className: string): SubroutineDec 
   sd.type = lexem['keyword'][0]['#text'];
 
   lexem = data.shift();
-  sd.returnType = lexem['keyword'][0]['#text'];
+  if (lexem['keyword']) {
+    sd.returnType = lexem['keyword'][0]['#text'];
+  } else {
+    sd.returnType = lexem['identifier'][0]['#text'];
+  }
 
   lexem = data.shift();
   sd.name = `${className}.${lexem['identifier'][0]['#text']}`;

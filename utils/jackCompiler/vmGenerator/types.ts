@@ -1,6 +1,6 @@
 export interface SymbolEntry {
   name: string;
-  kind: 'static' | 'field' | 'argument' | 'local';
+  kind: 'static' | 'field' | 'argument' | 'local' | 'pointer' | 'this';
   type: 'string' | 'int' | 'boolean' | string;
   index: number;
 }
