@@ -40,12 +40,27 @@ export const generateLetStatement = (
 ) => {
   let outVm = '';
 
-  outVm += generateExpression(statement.expression, classSymbolTable, functionSymbolTable, className);
-  if (statement.arrayExpression) throw new Error('array expression not implemented');
   let variable = functionSymbolTable[statement.varName];
   if (!variable) variable = classSymbolTable[statement.varName];
   if (!variable) throw new Error(`variable ${statement.varName} not found`);
-  outVm += `pop ${variable.kind} ${variable.index}\n`;
+
+  if (statement.arrayExpression) {
+    outVm += `push ${variable.kind} ${variable.index}\n`;
+    outVm += generateExpression(statement.arrayExpression, classSymbolTable, functionSymbolTable, className);
+    outVm += 'add\n';
+  }
+
+  outVm += generateExpression(statement.expression, classSymbolTable, functionSymbolTable, className);
+
+  if (statement.arrayExpression) {
+    outVm += 'pop temp 0\n'; //save expression result
+    outVm += 'pop pointer 1\n';
+    outVm += 'push temp 0\n';
+    outVm += 'pop that 0\n';
+  } else {
+    outVm += `pop ${variable.kind} ${variable.index}\n`;
+  }
+
   return outVm;
 };
 

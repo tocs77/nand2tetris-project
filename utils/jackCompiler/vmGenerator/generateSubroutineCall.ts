@@ -10,10 +10,6 @@ export const generateSubroutineCall = (
 ) => {
   let outVm = '';
 
-  for (const expression of subroutineCall.expressionList) {
-    outVm += generateExpression(expression, classSymbolTable, functionSymbolTable, className);
-  }
-
   let variable = functionSymbolTable[subroutineCall.varOrClassName];
   if (!variable) variable = classSymbolTable[subroutineCall.varOrClassName];
 
@@ -28,6 +24,9 @@ export const generateSubroutineCall = (
   if (variable) {
     outVm += `push ${variable.kind} ${variable.index}\n`;
     thisAdded++;
+  }
+  for (const expression of subroutineCall.expressionList) {
+    outVm += generateExpression(expression, classSymbolTable, functionSymbolTable, className);
   }
 
   outVm += `call ${calledClass}.${subroutineCall.subroutineName} ${subroutineCall.expressionList.length + thisAdded}\n`;

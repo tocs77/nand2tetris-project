@@ -53,6 +53,29 @@ const generateTerm = (term: Term, classSymbolTable: SymbolTable, functionSymbolT
     return outVm;
   }
 
+  if (term.type === 'stringConstant') {
+    outVm += `push constant ${term.value.length}\n`;
+    outVm += 'call String.new 1\n';
+    for (let i = 0; i < term.value.length; i++) {
+      outVm += `push constant ${term.value[i].charCodeAt(0)}\n`;
+      outVm += 'call String.appendChar 2\n';
+    }
+    return outVm;
+  }
+
+  if (term.type === 'array') {
+    let variable = functionSymbolTable[term.name];
+    if (!variable) variable = classSymbolTable[term.name];
+    if (!variable) throw new Error('variable not found');
+    outVm += generateExpression(term.expression, classSymbolTable, functionSymbolTable, className);
+    outVm += `push ${variable.kind} ${variable.index}\n`;
+
+    outVm += 'add\n';
+    outVm += 'pop pointer 1\n';
+    outVm += 'push that 0\n';
+    return outVm;
+  }
+
   console.log('Not implemented', term);
   throw new Error('not implemented');
 };

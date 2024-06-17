@@ -55,6 +55,9 @@ export const generateSubroutineDec = (subroutineDec: SubroutineDec, classSymbolT
   if (subroutineDec.type === 'method') {
     outVm += 'push argument 0\n';
     outVm += 'pop pointer 0\n';
+    for (const key in functionSymbolTable) {
+      if (functionSymbolTable[key].kind === 'argument') functionSymbolTable[key].index++; // added this as zero argument. shift all other arguments up
+    }
   }
   for (const statement of subroutineDec.subroutineBody.statements) {
     if (statement.type === 'returnStatement' && subroutineDec.returnType === 'void') {
